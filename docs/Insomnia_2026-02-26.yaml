@@ -1,0 +1,156 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Projeto POO
+meta:
+  id: wrk_ea67ba158a454f89a96467f199963b25
+  created: 1772027501175
+  modified: 1772115414727
+  description: ""
+collection:
+  - url: localhost:8000/categorias
+    name: SELECT
+    meta:
+      id: req_183ec55db7bb48999ab9568b2fdbf938
+      created: 1772027508957
+      modified: 1772115096892
+      isPrivate: false
+      description: ""
+      sortKey: -1772027536425
+    method: GET
+    parameters:
+      - name: id
+        value: ""
+        description: ""
+        disabled: false
+      - name: nome
+        value: ""
+        description: ""
+        disabled: false
+      - name: ordem
+        value: ""
+        description: ""
+        disabled: false
+        type: text
+        multiline: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8000/categorias
+    name: CREATE
+    meta:
+      id: req_707df65f5bce4c04b0c0bcbd2ab911b4
+      created: 1772027536325
+      modified: 1772114831812
+      isPrivate: false
+      description: ""
+      sortKey: -1772027536325
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "CCC"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8000/categorias
+    name: UPDATE
+    meta:
+      id: req_f0de87925cc04114aa032e45f87528d3
+      created: 1772028515646
+      modified: 1772028677251
+      isPrivate: false
+      description: ""
+      sortKey: -1772027508857
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "Iogurtes",
+        	"ativo": false
+        }
+    parameters:
+      - name: id
+        value: "3"
+        description: ""
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8000/categorias
+    name: DELETE
+    meta:
+      id: req_718c23d8f5f74a83a9952c483c4164ad
+      created: 1772108762457
+      modified: 1772113881698
+      isPrivate: false
+      description: ""
+      sortKey: -1772108762457
+    method: DELETE
+    parameters:
+      - name: id
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_521ffe02cf95f3bce7e22a8356ea5d1e51eb32ff
+    created: 1772027501186
+    modified: 1772027501186
+environments:
+  name: Base Environment
+  meta:
+    id: env_521ffe02cf95f3bce7e22a8356ea5d1e51eb32ff
+    created: 1772027501181
+    modified: 1772027501181
+    isPrivate: false
