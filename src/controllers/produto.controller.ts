@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { CategoriaService } from "../services/categoria.service";
+import { ProdutoService } from "../services/produto.service";
 
-export class CategoriaController {
-  constructor(private _service = new CategoriaService()) {}
+export class ProdutoController {
+  constructor(private _service = new ProdutoService()) {}
 
-  selecionar = async (req: Request, res: Response) => {
+  selecionarProdutos = async (req: Request, res: Response) => {
     try {
       const id = Number(req.query.id);
       const nome = String(req.query.nome);
@@ -15,66 +15,46 @@ export class CategoriaController {
       }
 
       if (id) {
-        const categorias = await this._service.selecionarUm(id);
-        if (categorias.length < 1) {
+        const produtos = await this._service.selecionarUm(id);
+        if (produtos.length < 1) {
           res
             .status(200)
             .json({ message: "Nenhum registro encontrado com esse ID." });
         }
-        console.log(categorias);
-        res.status(200).json({ categorias });
+        console.log(produtos);
+        res.status(200).json({ produtos });
       }
 
       if (nome) {
-        const categorias = await this._service.selecionarNome(nome);
-        if (categorias.length < 1) {
+        const produtos = await this._service.selecionarNome(nome);
+        if (produtos.length < 1) {
           res
             .status(200)
             .json({ message: "Nenhum registro encontrado com esse nome." });
         }
-        console.log(categorias);
-        res.status(200).json({ categorias });
+        console.log(produtos);
+        res.status(200).json({ produtos });
       }
 
       if (ordem) {
         if (ordem.toLowerCase() != "crescente") {
           res.status(200).json({ message: "Ordem desconhecida." });
         }
-        const categorias = await this._service.selecionarAsc();
-        if (categorias.length < 1) {
+        const produtos = await this._service.selecionarAsc();
+        if (produtos.length < 1) {
           res.status(200).json({ message: "Nenhum registro encontrado." });
         }
-        console.log(categorias);
-        res.status(200).json({ categorias });
+        console.log(produtos);
+        res.status(200).json({ produtos });
       }
 
-      const categorias = await this._service.selecionarTodos();
-      if (categorias.length < 1) {
+      const produtos = await this._service.selecionarTodos();
+      if (produtos.length < 1) {
         res
           .status(200)
           .json({ message: "Nenhum registro encontrado com esse ID." });
       }
-      res.status(200).json({ categorias });
-    } catch (error: unknown) {
-      console.error(error);
-      if (error instanceof Error) {
-        return res.status(500).json({
-          message: "Ocorreu um erro no servidor.",
-          errorMessage: error.message
-        });
-      }
-      res.status(500).json({
-        message: "Ocorreu um erro no servidor.",
-        errorMessage: "Erro desconhecido."
-      });
-    }
-  };
-
-  criar = async (req: Request, res: Response) => {
-    try {
-      const { nome } = req.body;
-      const novaCategoria = await this._service.criar(nome);
-      res.status(201).json({ novaCategoria });
+      res.status(200).json({ produtos });
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof Error) {
@@ -90,12 +70,49 @@ export class CategoriaController {
     }
   };
 
-  editar = async (req: Request, res: Response) => {
+  criarProduto = async (req: Request, res: Response) => {
     try {
-      const { nome, ativo } = req.body;
+      const { nome, valor } = req.body;
+      const idCategoria = Number(req.query.idCategoria);
+      const resultado = await this._service.criar(nome, valor, idCategoria);
+      res
+        .status(201)
+        .json({ message: "Produto criado com sucesso!", resultado: resultado });
+    } catch (error: unknown) {
+      console.error(error);
+      if (error instanceof Error) {
+        return res.status(500).json({
+          message: "Ocorreu um erro no servidor.",
+          errorMessage: error.message,
+        });
+      }
+      res.status(500).json({
+        message: "Ocorreu um erro no servidor.",
+        errorMessage: "Erro desconhecido.",
+      });
+    }
+  };
+
+  editarProduto = async (req: Request, res: Response) => {
+    try {
+      const { nome, valor } = req.body;
+      const idCategoria = Number(req.query.idCategoria);
       const id = Number(req.query.id);
-      const alterado = await this._service.editar(id, nome, ativo);
-      res.status(200).json({ alterado });
+
+      const produtoSelecionado = await this._service.selecionarUm(id);
+      if (produtoSelecionado.length < 1) {
+        res
+          .status(200)
+          .json({ message: "Nenhum produto encontrado com este ID." });
+      }
+
+      const resultado = await this._service.editar(
+        id,
+        nome,
+        valor,
+        idCategoria,
+      );
+      res.status(200).json({ resultado });
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof Error) {
@@ -110,20 +127,19 @@ export class CategoriaController {
       });
     }
   };
-
-  deletar = async (req: Request, res: Response) => {
+  deletarProduto = async (req: Request, res: Response) => {
     try {
       const id = Number(req.query.id);
       console.log(id);
-      const buscaItem = await this._service.selecionarUm(id);
-      if (buscaItem.length < 1) {
+      const produtoSelecionado = await this._service.selecionarUm(id);
+      if (produtoSelecionado.length < 1) {
         res
           .status(200)
           .json({ message: "Nenhum registro encontrado com esse ID." });
       }
-      const deletado = await this._service.deletar(id);
-      console.log(deletado);
-      res.status(200).json({ deletado });
+      const resultado = await this._service.deletar(id);
+      console.log(resultado);
+      res.status(200).json({message: "Produto deletado com sucesso!", resultado: resultado });
     } catch (error: unknown) {
       if (error instanceof Error) {
         return res.status(500).json({
